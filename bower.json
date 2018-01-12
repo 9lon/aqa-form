@@ -2,8 +2,8 @@
   "name": "aqa-form",
   "main": "aqa-form.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.3.1",
-    "aqa-font": "9lon/aqa-font#^0.0.1",
+    "polymer": "Polymer/polymer#^2",
+    "aqa-font": "9lon/aqa-font#0 - 1",
     "iron-input": "PolymerElements/iron-input#^2.0.1",
     "iron-icon": "PolymerElements/iron-icon#^2.0.1",
     "iron-icons": "PolymerElements/iron-icons#^2.0.1",
