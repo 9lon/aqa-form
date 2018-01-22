@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../aqa-font/aqa-trirong-font.html">
+<link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 
 <link rel="import" href="./aqa-date-picker-light.html">
 <link rel="import" href="./aqa-date-icon.html">
@@ -44,8 +45,7 @@
             notify: true
           },
           errorMessage: {
-            type: String,
-            // value: '2222222222222222222222222',
+            type: String
           },
           invalid: {
             type: Boolean,
@@ -87,25 +87,14 @@
           this.nativeInput = this.child.$.nativeInput
           this.nativeInput.addEventListener('focus', this._showDatePicker.bind(this))
 
-
-          // this.nativeInput.addEventListener('focusout', this._hideDatePicker.bind(this))
-          this.nativeInput.addEventListener('focusout', (e) => {
-            // console.log(e);
-          })
-
-
           this.aqaDataPickerLight = document.getElementById('aqaDataPickerLight')
           this.calendar = aqaDataPickerLight.$.calendar
-          // console.log(this.aqaDataPickerLight );
-          // console.log(this.calendar);
-          // console.log(this.nativeInput);
           this.aqaDataPickerLight.addEventListener('setDate', this._hideDatePicker.bind(this))
         }, 1)
 
       }
       setDisabled(disabled = false) {
         setTimeout(() => {
-          // console.log(this.child.disabled);
           this.child.disabled = disabled
         }, 2)
 
@@ -118,7 +107,6 @@
       }
 
       _showDatePicker() {
-        // console.log(1111);
         this.child.addEventListener('value-changed', this._childValueChanged.bind(this))
 
         this.aqaDataPickerLight.child = this.child
@@ -192,27 +180,19 @@
         }
       }
       validate() {
-        // 29/9/2560
-        // setTimeout(() => {
 
 
         let be = this.aqaDataPickerLight.selectedBe
         let dc = this.aqaDataPickerLight.selected
-        // console.log(be, dc);
         let arr = []
         arr.push((/^\d{4}[-]\d{1,2}[-]\d{1,2}/).test(dc))
         arr.push((/^\d{1,2}[/]\d{1,2}[/]\d{4}/).test(be))
         let checkData = (arr.find(item => item === false) === undefined ? false : true)
-        // console.log(this.errorMessage);
-        // console.log(checkData);
+
         this.child.invalid = checkData
         this.child.errorMessage = this.errorMessage
-        // console.log(this.child.invalid = checkData);
-        // this.set('invalid', !checkData)
-        // console.log(this.invalid);
 
         return checkData
-        // }, 4)
       }
 
 
