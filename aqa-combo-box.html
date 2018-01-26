@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<!-- <link rel="import" href="../polymer/lib/mixins/mutable-data.html"> -->
+
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
@@ -60,7 +62,6 @@
             }
 
             input[disabled] {
-                /* border: 0; */
                 background-color: #F3F7F9;
                 border-color: #e4eaec;
                 color: #a8b3c5;
@@ -69,22 +70,18 @@
             }
 
             input::-webkit-input-placeholder {
-                /* Chrome/Opera/Safari */
                 color: #A9A9A9;
             }
 
             input::-moz-placeholder {
-                /* Firefox 19+ */
                 color: #A9A9A9;
             }
 
             input:-ms-input-placeholder {
-                /* IE 10+ */
                 color: #A9A9A9;
             }
 
             input:-moz-placeholder {
-                /* Firefox 18- */
                 color: #A9A9A9;
             }
 
@@ -136,7 +133,6 @@
             }
         </style>
 
-        <!-- {{value}}//[[items.length]] -->
         <div class="form-group">
             <label class="control-label" invalid$="{{invalid}}">[[label]] &nbsp;
                 <template is="dom-if" if="[[required]]">
@@ -145,7 +141,7 @@
             </label>
             <div class="input-container">
                 <vaadin-combo-box-light id="vaadinComboBox" items="[[items]]" item-label-path="[[itemLabelPath]]" item-value-path="[[itemValuePath]]"
-                    attr-for-value="bind-value" disabled$="[[disabled]]">
+                    attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}">
                     <iron-input>
                         <input id="nativeInput" class="form-control" placeholder="[[placeholder]]" invalid$="{{invalid}}" disabled$="[[disabled]]">
                     </iron-input>
@@ -164,7 +160,6 @@
                 <small class="help-block">[[errorMessage]]</small>
             </template>
         </div>
-
     </template>
     <script>
         class AqaComboBox extends Polymer.Element {
@@ -212,7 +207,7 @@
                     },
                     value: {
                         notify: true,
-                        observer: '_valueChanged'
+                        observer: '_valueChanged',
                     },
                     invalid: {
                         type: Boolean,
@@ -226,6 +221,10 @@
                     disabled: {
                         type: Boolean
                     },
+                    selectedItem: {
+                        type: Object,
+                        notify: true
+                    }
 
                 }
             }
@@ -233,17 +232,15 @@
                 super.connectedCallback()
                 this.$.vaadinComboBox.addEventListener('value-changed', (e) => {
                     this.set('value', this.$.vaadinComboBox.value)
+                    //this.selectedItem = this.$.vaadinComboBox.selectedItem
+                    //console.log(this.selectedItem)
                 })
-                // console.log(111111111111);
             }
             validate() {
                 this.invalid = false
-                // this.value = this.value.trim()
-                // console.log(this.required, this.value);
                 if (this.required && (this.value === "" || this.value === undefined || this.value === null)) {
                     this.invalid = true
                 }
-                // console.log(this.invalid);
                 return this.invalid
             }
 
@@ -253,25 +250,17 @@
                 this.invalid = false
                 this.value = null
                 this.$.nativeInput.value = ""
-                // this.setData = null
+                this.selectedItem = null
             }
             setSeleted(items) {
-                // console.log(items.length >= 1);
-                // console.log(this.value);
                 if (items.length >= 1) {
                     this._valueChanged(this.value)
-                    // console.log(this.value);
                     this.$.vaadinComboBox.value = this.value
-                    // console.log(this.$.vaadinComboBox.value);
                 }
 
             }
 
             _valueChanged(val) {
-                // if (val === undefined)
-                //     return
-                // console.log(val);
-                // console.log(this.itemValuePath);
                 if (this.autoValidate && this.required) {
                     if (this.fristValue && this.value == "") {
                         this.invalid = false
@@ -289,15 +278,12 @@
                 }
                 if (val !== undefined && val !== '') {
                     newDate = this.items.find(el => el[this.itemValuePath] === val)
-                    // console.log(this.items);
-                    // console.log(newDate);
                     detail = {
                         queueProperty: true,
                         value: newDate
                     }
-                    // console.log(detail);
                 }
-                // console.log(val);
+
                 this.dispatchEvent(new CustomEvent('selected-item-changed', {
                     detail: detail
                 }))

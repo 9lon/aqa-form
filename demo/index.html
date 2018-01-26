@@ -13,6 +13,7 @@
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
   <link rel="import" href="../aqa-form.html">
+  <!-- <link rel="import" href="../bower_components/polymer/lib/elements/dom-bind.html"> -->
 
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -26,14 +27,22 @@
     <demo-snippet>
       <template>
         <aqa-input label="ชื่อผู้ใช้งาน"></aqa-input>
-        <aqa-combo-box id="comboBox" label="ภาค" item-label-path="name" item-value-path="id" value="{{selected}}" required></aqa-combo-box>
-        <script>
-          document.getElementById('comboBox').items = [
-            { id:1, name:'น้ำแข็ง' },
-            { id:2, name:'KhaengSai' },
-            { id:3, name:'Alfred' }
-          ]
-        </script>
+        <dom-bind>
+          <template>
+            <aqa-combo-box id="comboBox" label="ภาค" item-label-path="name" item-value-path="id" selected-item="{{sitem}}" required></aqa-combo-box>
+            <script>
+                document.getElementById('comboBox').items = [
+                  { id:1, name:'น้ำแข็ง' },
+                  { id:2, name:'KhaengSai' },
+                  { id:3, name:'Alfred' }
+                ]
+                document.getElementById('comboBox').addEventListener('selected-item-changed',function(data){
+                  console.log(data)
+                })
+              </script>
+          </template>
+        </dom-bind>
+        
         <aqa-date-picker required value="">
             <aqa-input label="วันเกิด"></aqa-input>
         </aqa-date-picker>
