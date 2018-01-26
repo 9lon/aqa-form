@@ -29,12 +29,12 @@
         <aqa-input label="ชื่อผู้ใช้งาน"></aqa-input>
         <dom-bind>
           <template>
-            <aqa-combo-box id="comboBox" label="ภาค" item-label-path="name" item-value-path="id" selected-item="{{sitem}}" required></aqa-combo-box>
+            <aqa-combo-box id="comboBox" label="ภาค" selected-item="{{sitem}}" required></aqa-combo-box>
             <script>
                 document.getElementById('comboBox').items = [
-                  { id:1, name:'น้ำแข็ง' },
-                  { id:2, name:'KhaengSai' },
-                  { id:3, name:'Alfred' }
+                  { value:1, label:'น้ำแข็ง' },
+                  { value:2, label:'KhaengSai' },
+                  { value:3, label:'Alfred' }
                 ]
                 document.getElementById('comboBox').addEventListener('selected-item-changed',function(data){
                   console.log(data)
