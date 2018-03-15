@@ -134,11 +134,13 @@
         </style>
 
         <div class="form-group">
-            <label class="control-label" invalid$="{{invalid}}">[[label]] &nbsp;
-                <template is="dom-if" if="[[required]]">
-                    <span>*</span>
-                </template>
-            </label>
+            <template is="dom-if" if="[[!noLabelFloat]]">
+                <label class="control-label" invalid$="{{invalid}}">[[label]] &nbsp;
+                    <template is="dom-if" if="[[required]]">
+                        <span>*</span>
+                    </template>
+                </label>
+            </template>
             <div class="input-container">
                 <vaadin-combo-box-light id="vaadinComboBox" items="[[items]]" item-label-path="[[itemLabelPath]]" item-value-path="[[itemValuePath]]"
                     attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}">
@@ -224,8 +226,11 @@
                     selectedItem: {
                         type: Object,
                         notify: true
+                    },
+                    noLabelFloat:{
+                        type:Boolean,
+                        value:false
                     }
-
                 }
             }
             connectedCallback() {

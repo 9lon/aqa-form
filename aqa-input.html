@@ -110,11 +110,13 @@
             }
         </style>
         <div class="form-group">
-            <label class="control-label" invalid$="{{invalid}}">[[label]]
-                <template is="dom-if" if="[[required]]">
-                    <span>*</span>
-                </template>
-            </label>
+            <template is="dom-if" if="[[!noLabelFloat]]">
+                <label class="control-label" invalid$="{{invalid}}">[[label]]
+                    <template is="dom-if" if="[[required]]">
+                        <span>*</span>
+                    </template>
+                </label>
+            </template>
             <input id="nativeInput" class="form-control" placeholder="[[placeholder]]" on-input="_inputChanged" invalid$="[[invalid]]"
                 disabled$="[[disabled]]" maxlength$="[[maxlength]]" minlength$="[[minlength]]">
             <template is="dom-if" if="[[invalid]]">
@@ -184,6 +186,10 @@
                     dataPattern: {
                         type: String,
                         value: ""
+                    },
+                    noLabelFloat:{
+                        type:Boolean,
+                        value:false
                     }
 
                 }
