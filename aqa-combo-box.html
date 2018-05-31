@@ -143,7 +143,7 @@
             </template>
             <div class="input-container">
                 <vaadin-combo-box-light id="vaadinComboBox" items="[[items]]" item-label-path="[[itemLabelPath]]" item-value-path="[[itemValuePath]]"
-                    attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}">
+                    attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}" value="{{value}}">
                     <iron-input>
                         <input id="nativeInput" class="form-control" placeholder="[[placeholder]]" invalid$="{{invalid}}" disabled$="[[disabled]]">
                     </iron-input>
