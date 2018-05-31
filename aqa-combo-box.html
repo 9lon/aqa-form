@@ -289,9 +289,11 @@
                     }
                 }
 
-                this.dispatchEvent(new CustomEvent('selected-item-changed', {
-                    detail: detail
-                }))
+                setInterval(1,function(){
+                    this.dispatchEvent(new CustomEvent('selected-item-changed', {
+                        detail: detail
+                    }))
+                }.bind(this))
             }
 
             _focusInput() {
