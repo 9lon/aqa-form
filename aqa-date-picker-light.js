@@ -1,0 +1,495 @@
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@polymer/polymer/lib/elements/dom-repeat.js';
+import { IronValidatorBehavior } from '@polymer/iron-validator-behavior/iron-validator-behavior.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+
+class AqaDatePickerLight extends mixinBehaviors([IronValidatorBehavior], PolymerElement) {
+  static get template() {
+    return html`
+        <style is="custom-style">
+            input {
+                font: inherit;
+                outline: none;
+                box-shadow: none;
+                border: none;
+                width: auto;
+                text-align: center;
+                font-size: medium;
+            }
+
+            div {
+                font-size: 10px
+            }
+
+
+            .calendar_modern {
+                position: fixed;
+                top: 0;
+                left: 0;
+                display: none;
+            }
+
+            .calendar_modern .calendar {
+                margin: auto;
+                width: 245px;
+                height: auto;
+            }
+
+            .calendar_modern .calendar .nav {
+                height: 0;
+                position: relative;
+            }
+
+            .calendar_modern .calendar .nav i,
+            .calendar_modern .calendar .nav b {
+                display: block;
+                font-style: normal;
+                position: absolute;
+                cursor: pointer;
+                width: 30px;
+                height: 30px;
+                z-index: 100;
+                top: 0;
+            }
+
+            .calendar_modern .calendar .nav i {
+                left: 0;
+                border-right: 1px solid #423a37;
+                background: url(http://cs4399.userapi.com/u49225742/docs/58f03726ea27/lft.png) no-repeat center center transparent;
+            }
+
+            .calendar_modern .calendar .nav b {
+                right: 0;
+                border-left: 1px solid #423a37;
+                background: url(http://cs4399.userapi.com/u49225742/docs/5fd2e9dd3a9f/rgt.png) no-repeat center center transparent;
+            }
+
+            .calendar_modern .calendar .month .header {
+                width: 238px;
+                height: 30px;
+                position: relative;
+                font-family: Arial, Helvetica, sans-serif;
+                color: white;
+                line-height: 30px;
+                font-weight: bold;
+                font-size: 1.4em;
+                text-align: center;
+                background: #372f2c;
+                border-radius: 3px;
+            }
+
+            .calendar_modern .calendar .month .body {
+                width: 240px;
+                background: #e4e4e4;
+            }
+
+            .calendar_modern .calendar .month .body .day_names {
+
+                height: 25px;
+            }
+
+            .calendar_modern .calendar .month .body .day_names i {
+                font-family: Arial, Helvetica, sans-serif;
+                display: block;
+                height: 25px;
+                line-height: 25px;
+                text-align: center;
+                font-style: normal;
+                float: left;
+                width: 34px;
+            }
+
+            .calendar_modern .calendar .month .body .days s {
+                font-family: Arial, Helvetica, sans-serif;
+                display: block;
+                float: left;
+                width: 33px;
+                height: 33px;
+                background-color: #ffffff;
+                font-size: 1.5em;
+                font-weight: bold;
+                line-height: 34px;
+                text-align: center;
+                font-style: normal;
+                text-decoration: none;
+                border-right: 1px solid #aaaaaa;
+                border-bottom: 1px solid #aaaaaa;
+                cursor: pointer;
+            }
+
+
+            .calendar_modern .calendar .month .body .days s:nth-child(n+1):nth-child(-n+7) {
+                border-top: 1px solid #aaaaaa;
+            }
+
+            [i-left] {
+                border-left: 1px solid #aaaaaa;
+            }
+
+            [i-select] {
+                color: #3399ff;
+            }
+
+            [i-frist],
+            [i-last] {
+                color: #8d8d8d;
+            }
+
+            [i-current] {
+                color: #000;
+            }
+
+            span,
+            .n {
+                cursor: pointer
+            }
+        </style>
+
+        <div id="calendar" class="calendar_modern">
+            <div class="calendar">
+                <div class="months">
+                    <div class="month" data-date="2011.1">
+                        <div class="header">
+                            <span class="n" on-click="previousYear">&lt;&lt;</span>&nbsp;&nbsp;
+                            <span class="n" on-click="previousMonth">&lt;</span>&nbsp;&nbsp;&nbsp;&nbsp;[[monthAndYear]]&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="n" on-click="nextMonth">&gt;</span>&nbsp;&nbsp;
+                            <span on-click="nextYear" class="n">&gt;&gt;</span>
+                        </div>
+                        <div class="body">
+
+                            <div class="day_names">
+                                <template is="dom-repeat" items="[[daysOfWeek]]">
+                                    <i>[[item]]</i>
+                                </template>
+                            </div>
+                            <div class="days">
+                                <template is="dom-repeat" items="[[items]]">
+                                    <template is="dom-repeat" as="item2" items="[[item]]">
+                                        <s on-click="_selectDate" i-left\$="[[_checkLeft(index)]]" i-select\$="[[_checkType(item2.type,'select')]]" i-frist\$="[[_checkType(item2.type,'frist')]]" i-current\$="[[_checkType(item2.type,'current')]]" i-last\$="[[_checkType(item2.type,'last')]]">[[item2.day]]</s>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+`;
+  }
+
+  static get is() { return 'aqa-date-picker-light'; }
+  static get properties() {
+      return {
+          showBc: {
+              type: Boolean,
+              value: false
+          },
+          selected: {
+              type: String,
+              observer: '_selectedChanged',
+              notify: true
+          },
+          selectedBe: {
+              type: String,
+              observer: '_selectedBeChanged',
+              notify: true,
+          },
+          label: {
+              type: String,
+              value: 'Label'
+          },
+          disabled: {
+              type: Boolean,
+              value: false
+          },
+          isClose: {
+              type: Boolean,
+              value: false,
+              notify: true
+          },
+          daysOfWeek: {
+              type: Array,
+              value: ['จัน', 'อัง', 'พุธ', 'พฤ', 'ศุกร์', 'เสาร์', 'อา']
+          },
+          months: {
+              type: Array,
+              value: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
+          },
+      };
+  }
+  constructor() {
+      super()
+      this.init()
+      this.renderCalendar()
+  }
+
+  setZeroBefore(day) {
+      if (Number(day) > 0 && 10 > Number(day) && day[0] !== '0') {
+          return '0' + day
+      } else {
+          return day
+      }
+  }
+  init() {
+      
+      this.format = 'dd/mm/yyyy'
+      var d = new Date()
+      this.currentMonth = d.getMonth()
+      this.currentYear = d.getFullYear()
+
+      var f = this.format
+      if (typeof (f) == 'string') {
+          this.f = f.charAt(0).toUpperCase();
+      } else {
+          this.f = 'M';
+      }
+  }
+
+  renderCalendar() {
+      this.calendar(this.currentYear, this.currentMonth)
+  }
+  _getfirstDayOfCurrentMonth(y, m) {
+      return new Date(y, m, 1).getDay()
+  }
+  _getlastDateOfCurrentMonth(y, m) {
+      return new Date(y, m + 1, 0).getDate()
+  }
+  _lastDateOfLastMonth(y, m) {
+      return m == 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate()
+  }
+  calendar(y, m) {
+      var firstDayOfCurrentMonth = this._getfirstDayOfCurrentMonth(y, m)
+      var lastDateOfCurrentMonth = this._getlastDateOfCurrentMonth(y, m)
+      var lastDateOfLastMonth = this._lastDateOfLastMonth(y, m)
+      if (this.months !== undefined && !isNaN(y) && !isNaN(m)) {
+          var monthandyear = this.months[m] + ' - ' + (y + 543)
+          var dm = this.f == 'M' ? 1 : firstDayOfCurrentMonth == 0 ? -5 : 2
+          var p = dm
+
+          var cellvalue;
+          var dataCal = [];
+
+          for (var d, i = 0, z0 = 0; z0 < 6; z0++) {
+              var datarow = [];
+              for (var z0a = 0; z0a < 7; z0a++) {
+                  d = i + dm - firstDayOfCurrentMonth;
+
+                  if (d < 1) {
+                      cellvalue = lastDateOfLastMonth - firstDayOfCurrentMonth + p++;
+
+                      var getM;
+                      var getY;
+                      if (m == 0) {
+                          getM = 11
+                          getY = y - 1
+                      } else {
+                          getM = m - 1
+                          getY = y
+                      }
+
+                      datarow.push({ type: 'frist', day: cellvalue, month: getM, year: getY, date: `${getY}-${getM + 1}-${cellvalue}` })
+                  } else if (d > lastDateOfCurrentMonth) {
+
+                      var getM;
+                      var getY;
+                      if (m == 11) {
+                          getM = 0
+                          getY = y + 1
+                      } else {
+                          getM = m + 1
+                          getY = y
+                      }
+                      datarow.push({ type: 'last', day: p, month: getM, year: getY, date: `${getY}-${getM + 1}-${p}` })
+
+                      p++
+                  } else {
+                      var type = 'current'
+                      if (this.selectData)
+                          if (this.selectData.day == d && this.selectData.month == m && this.selectData.year == y)
+                              type = 'select'
+
+                      datarow.push({ type: type, day: d, month: m, year: y, date: `${y}-${m + 1}-${d}` })
+                      p = 1;
+                  }
+
+                  if (i % 7 == 6 && d >= lastDateOfCurrentMonth) {
+
+                      z0 = 10; 
+                  }
+
+                  i++;
+              }
+              dataCal.push(datarow);
+          }
+
+          this.monthAndYear = monthandyear
+          this.items = dataCal
+      }
+  }
+
+  nextMonth() {
+      if (this.currentMonth == 11) {
+
+          this.currentMonth = 0;
+          this.currentYear = this.currentYear + 1;
+
+      } else {
+
+          this.currentMonth = this.currentMonth + 1;
+
+      }
+      this.renderCalendar()
+  }
+  previousMonth() {
+      if (this.currentMonth == 0) {
+
+          this.currentMonth = 11;
+          this.currentYear = this.currentYear - 1;
+
+      } else {
+
+          this.currentMonth = this.currentMonth - 1;
+
+      }
+      this.renderCalendar()
+  }
+  previousYear() {
+      this.currentYear = this.currentYear - 1;
+      this.renderCalendar()
+  }
+  nextYear() {
+      this.currentYear = this.currentYear + 1;
+      this.renderCalendar()
+  }
+
+  _checkType(type, select) {
+      return type == select
+  }
+  _checkLeft(i) {
+      return i == 0
+  }
+
+  _selectDate(e) {
+
+      let rawDate = e.model.item2.date.split('-')
+      rawDate = rawDate[0] + '-' + rawDate[1] + '-' + this.setZeroBefore(rawDate[2])
+      this.set('selected', rawDate)
+      this.dispatchEvent(new CustomEvent('setDate', { detail: { model: 'close' } }))
+
+      
+  }
+  _firstDayOfMonth() {
+      new Date(Number(this.data.year) - 543, Number(this.data.month - 1), 1)
+  }
+  _lastDayOfMonth() {
+      new Date(Number(this.data.year) - 543, Number(this.data.month - 1) + 1, 0)
+  }
+  _checkDateBc(dates) {
+      let select = dates.split('/')
+      let thisDay = new Date().getDate()
+      let thisMonth = new Date().getMonth()
+      let thisYear = new Date().getFullYear()
+      let date = dates
+      if (Number(select[1]) === '' || Number(select[0]) === '' || Number(select[2]) === '')
+          return
+      if (Number(select[1]) > 12) {
+          date = `${this.setZeroBefore(select[0])}/${this.setZeroBefore(thisMonth + 1)}/${select[2]}`
+      }
+      if (Number(select[1].length) <= 1) {
+          date = `${this.setZeroBefore(select[0])}/${this.setZeroBefore(select[1])}/${select[2]}`
+      }
+      if (Number(select[0]) > this._getlastDateOfCurrentMonth(select[2], select[1] - 1)) {
+          date = `${this.setZeroBefore(thisDay)}/${this.setZeroBefore(select[1])}/${select[2]}`
+      }
+      if (Number(select[2]) > 9998) {
+          date = `${this.setZeroBefore(select[0])}/${this.setZeroBefore(select[1])}/${thisYear + 543}`
+      }
+      return date
+  }
+  _checkDateDc(dates) {
+      let select = dates.split('-')
+      let thisDay = new Date().getDate()
+      let thisMonth = new Date().getMonth()
+      let thisYear = new Date().getFullYear()
+      let date = dates
+      // month
+      if (Number(select[1]) > 12) {
+          date = `${select[0]}-${thisMonth + 1}-${select[2]}`
+      }
+      // day
+      if (Number(select[2]) > this._getlastDateOfCurrentMonth(select[0], select[1] - 1)) {
+          date = `${select[0]}-${select[1]}-${thisDay}`
+      }
+      //year
+      if (Number(select[0]) > 9998) {
+          date = `${thisYear}-${select[1]}-${select[2]}`
+      }
+      return dates
+
+
+  }
+  _checkDatePassBc(select) {
+      if (select.length > 2) {
+          return select[2].length >= 4 && select[2] < 9999 &&
+              select[1].length >= 1 && select[1] < 13 &&
+              select[0].length >= 1 && Number(select[0]) <= this._getlastDateOfCurrentMonth(select[2], select[1] - 1)
+      } else {
+          return false
+      }
+
+  }
+  _checkDatePassDc(select) {
+      // console.log('_checkDatePassDc');
+      if (select.length > 2) {
+          return select[0].length >= 4 && Number(select[0]) < 9999 &&
+              select[1].length >= 1 && Number(select[1]) < 13 &&
+              select[2].length >= 1 && Number(select[2]) <= this._getlastDateOfCurrentMonth(select[2], select[1] - 1)
+      } else {
+          return false
+      }
+  }
+  _selectedChanged(selected) {
+      //เช็คว่าค่าว่างมาไหม
+      if (selected !== '' && selected !== undefined) {
+          selected = this._checkDateDc(selected)
+          var select = selected.split('-')
+          if (this._checkDatePassDc(select)) {
+              this.selectData = {
+                  day: this.setZeroBefore(select[2]),
+                  month: parseInt(select[1]) - 1,
+                  year: parseInt(select[0])
+              }
+              this.selectedBe = `${this.selectData.day}/${this.selectData.month + 1}/${this.selectData.year + 543}`
+              this.currentYear = this.selectData.year
+              this.currentMonth = this.selectData.month
+              this.renderCalendar()
+            
+          }
+      }
+  }
+
+  _selectedBeChanged(selectedBe) {
+
+      if (selectedBe.length < 7)
+          return
+      let newData = this._checkDateBc(this._checkDateBc(selectedBe))
+
+      this.child.value = newData.replace(/\//g, "")
+      var select = newData.split('/')
+
+      if (this._checkDatePassBc(select)) {
+          var selectData = {
+              day: this.setZeroBefore(select[0]),
+              month: this.setZeroBefore(select[1]),
+              year: parseInt(select[2] - 543)
+          }
+          this.selected = (`${selectData.year}-${selectData.month}-${selectData.day}`)
+      }
+
+
+
+  }
+}
+
+window.customElements.define(AqaDatePickerLight.is, AqaDatePickerLight);

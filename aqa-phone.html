@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../aqa-font/aqa-trirong-font.html">
+<script type="module" src="../../@polymer/polymer/polymer-element.js"></script>
+<script type="module" src="../../aqa-font/aqa-trirong-font.js"></script>
 
 <dom-module id="aqa-phone">
     <template>
@@ -146,97 +146,117 @@
                         type: Number,
                         value: ""
                     },
-                    input2: {
-                        type: Number,
-                        value: ""
-                    },
-                    input3: {
-                        type: Number,
-                        value: ""
-                    },
-                    hasError: {
-                        type: Boolean,
-                        value: false
-                    },
-                    required: {
-                        type: Boolean,
-                        value: false
-                    },
-                    placeholder: {
-                        type: String,
-                        value: ""
-                    },
-                    errorMassage: {
-                        type: String,
-                        value: ""
-                    },
-                    type: {
-                        type: String,
-                        value: 'text'
-                    }
-                }
+    <script type="module">
+import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
+import '../../aqa-font/aqa-trirong-font.js';
+class AqaPhone extends PolymerElement {
+    static get is() { return 'aqa-phone' }
+    static get properties() {
+        return {
+            label: {
+                type: String,
+                value: ""
+            },
+            value: {
+                type: Number,
+                notify: true,
+                value: "",
+                observer:'_valueChanged'
+            },
+            input1: {
+                type: Number,
+                value: ""
+            },
+            input2: {
+                type: Number,
+                value: ""
+            },
+            input3: {
+                type: Number,
+                value: ""
+            },
+            hasError: {
+                type: Boolean,
+                value: false
+            },
+            required: {
+                type: Boolean,
+                value: false
+            },
+            placeholder: {
+                type: String,
+                value: ""
+            },
+            errorMassage: {
+                type: String,
+                value: ""
+            },
+            type: {
+                type: String,
+                value: 'text'
             }
+        }
+    }
 
-            validate() {
-                this.hasError = false
-                // this.value = this.value.trim()
-                if (this.required && this.value == "") {
-                    this.hasError = true
-                }
-
-                return this.hasError
-            }
-
-            reset() {
-                this.hasError = false
-                this.$.value = ""
-            }
-
-            _inputChanged(e) {
-
-                var inputId = e.target.getAttribute('id')
-                var digi = parseInt(e.target.getAttribute('digi'))
-
-                if (!isNaN(parseInt(e.data)) || e.data==null) {
-                    
-                    e.target.value = e.target.value.substring(0, digi)
-                    this[inputId+"_old"] = e.target.value
-
-                    if (e.target.value.length == digi) {
-                        if (inputId == "input1") {
-                            this.$.input2.focus()
-                        } else if (inputId == "input2") {
-                            this.$.input3.focus()
-                        }
-                    } else if (e.target.value.length == 0) {
-                        if (inputId == "input3") {
-                            this.$.input2.focus()
-                        } else if (inputId == "input2") {
-                            this.$.input1.focus()
-                        }
-                    }
-
-                    this.value = this.$.input1.value + this.$.input2.value + this.$.input3.value
-
-                }else{
-                    e.target.value = this[inputId+"_old"]
-                }
-
-
-            }
-
-            _valueChanged(val){
-                // console.log(val.substring(0, 3))
-                // console.log(val.substring(3, 6))
-                // console.log(val.substring(6, 10))
-                this.$.input1.value = val.substring(0, 3)
-                this.$.input2.value = val.substring(3, 6)
-                this.$.input3.value = val.substring(6, 10)
-            }
-
-
+    validate() {
+        this.hasError = false
+        // this.value = this.value.trim()
+        if (this.required && this.value == "") {
+            this.hasError = true
         }
 
-        window.customElements.define(AqaPhone.is, AqaPhone);
-    </script>
-</dom-module>
+        return this.hasError
+    }
+
+    reset() {
+        this.hasError = false
+        this.$.value = ""
+    }
+
+    _inputChanged(e) {
+
+        var inputId = e.target.getAttribute('id')
+        var digi = parseInt(e.target.getAttribute('digi'))
+
+        if (!isNaN(parseInt(e.data)) || e.data==null) {
+            
+            e.target.value = e.target.value.substring(0, digi)
+            this[inputId+"_old"] = e.target.value
+
+            if (e.target.value.length == digi) {
+                if (inputId == "input1") {
+                    this.$.input2.focus()
+                } else if (inputId == "input2") {
+                    this.$.input3.focus()
+                }
+            } else if (e.target.value.length == 0) {
+                if (inputId == "input3") {
+                    this.$.input2.focus()
+                } else if (inputId == "input2") {
+                    this.$.input1.focus()
+                }
+            }
+
+            this.value = this.$.input1.value + this.$.input2.value + this.$.input3.value
+
+        }else{
+            e.target.value = this[inputId+"_old"]
+        }
+
+
+    }
+
+    _valueChanged(val){
+        // console.log(val.substring(0, 3))
+        // console.log(val.substring(3, 6))
+        // console.log(val.substring(6, 10))
+        this.$.input1.value = val.substring(0, 3)
+        this.$.input2.value = val.substring(3, 6)
+        this.$.input3.value = val.substring(6, 10)
+    }
+
+
+}
+
+window.customElements.define(AqaPhone.is, AqaPhone);
+</script>

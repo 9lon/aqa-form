@@ -7,13 +7,14 @@
 
   <title>aqa-form demo</title>
 
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+    import '@polymer/iron-demo-helpers/demo-snippet';
+  </script>
 
-  <link rel="import" href="../aqa-form.html">
-  <!-- <link rel="import" href="../bower_components/polymer/lib/elements/dom-bind.html"> -->
+  <script type="module" src="../aqa-form.js"></script>
 
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -31,25 +32,24 @@
           <template>
             <aqa-combo-box id="comboBox" label="ภาค" selected-item="{{sitem}}" required></aqa-combo-box>
             <script>
-                document.getElementById('comboBox').items = [
-                  { value:1, label:'น้ำแข็ง' },
-                  { value:2, label:'KhaengSai' },
-                  { value:3, label:'Alfred' }
-                ]
-                document.getElementById('comboBox').addEventListener('selected-item-changed',function(data){
-                  console.log(data)
-                })
-              </script>
+              document.getElementById('comboBox').items = [
+                { value: 1, label: 'น้ำแข็ง' },
+                { value: 2, label: 'KhaengSai' },
+                { value: 3, label: 'Alfred' }
+              ]
+              document.getElementById('comboBox').addEventListener('selected-item-changed', function (data) {
+                console.log(data)
+              })
+            </script>
           </template>
         </dom-bind>
-        
+
         <aqa-date-picker required value="">
-            <aqa-input label="วันเกิด"></aqa-input>
+          <aqa-input label="วันเกิด"></aqa-input>
         </aqa-date-picker>
       </template>
     </demo-snippet>
   </div>
-</body>
 </body>
 
 </html>
