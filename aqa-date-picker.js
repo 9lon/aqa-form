@@ -1,6 +1,6 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '@nylon/aqa-font/aqa-font.js';
+import '@9lon/aqa-font/aqa-font.js';
 import { IronValidatorBehavior } from '@polymer/iron-validator-behavior/iron-validator-behavior.js';
 import './aqa-date-picker-light.js';
 import './aqa-date-icon.js';

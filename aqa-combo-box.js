@@ -11,7 +11,7 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box-light.js';
 import './aqa-combo-box-item.js';
-import '@nylon/aqa-font/aqa-font.js';
+import '@9lon/aqa-font/aqa-font.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 class AqaComboBox extends PolymerElement {
   static get template() {
