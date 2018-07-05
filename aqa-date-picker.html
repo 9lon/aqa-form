@@ -142,7 +142,10 @@
       }
 
       _childValueChanged() {
-        console.log('change',this.child.value)
+        // console.log('change',this.child.value)
+        if (this.child.value==undefined){
+          return
+        }
         var value = this.child.value
         var valueInput = "";
 
