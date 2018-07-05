@@ -85,7 +85,12 @@
           this.child.errorMessage = this.errorMessage
           this.child.disabled = this.disabled
           this.nativeInput = this.child.$.nativeInput
-          this.nativeInput.addEventListener('focus', this._showDatePicker.bind(this))
+
+          this.child.addEventListener('value-changed', (e)=>this._childValueChanged(e))
+          this.child.addEventListener('focus', (e)=>this._childValueChanged(e))
+          this.nativeInput.addEventListener('focus', (e)=>this._showDatePicker(e))
+          
+          
 
           this.aqaDataPickerLight = document.getElementById('aqaDataPickerLight')
           this.calendar = aqaDataPickerLight.$.calendar
@@ -107,7 +112,7 @@
       }
 
       _showDatePicker() {
-        this.child.addEventListener('value-changed', this._childValueChanged.bind(this))
+        //this._childValueChanged().bind(this)()
 
         this.aqaDataPickerLight.child = this.child
 
@@ -136,8 +141,9 @@
 
       }
 
-      _childValueChanged(e) {
-        var value = e.target.value
+      _childValueChanged() {
+        console.log('change',this.child.value)
+        var value = this.child.value
         var valueInput = "";
 
         valueInput += value.substring(0, 2)
