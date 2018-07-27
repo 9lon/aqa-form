@@ -135,7 +135,7 @@
 
         <div class="form-group">
             <template is="dom-if" if="[[!noLabelFloat]]">
-                <label class="control-label" invalid$="{{invalid}}">[[label]] &nbsp;
+                <label class="control-label" invalid$="{{invalid}}">[[label]]  
                     <template is="dom-if" if="[[required]]">
                         <span>*</span>
                     </template>
@@ -152,7 +152,7 @@
                     </template>
                 </vaadin-combo-box-light>
 
-                <template is="dom-if" if={{value}}>
+                <template is="dom-if" if="{{value}}">
                     <iron-icon class="arrow-drop-downw" hidden="{{disabled}}" icon="icons:clear" on-click="reset"></iron-icon>
                 </template>
                 <iron-icon class="arrow-drop-down" hidden="{{disabled}}" icon="icons:arrow-drop-down" on-click="_focusInput"></iron-icon>
@@ -178,10 +178,6 @@
                     label: {
                         type: String,
                         value: ""
-                    },
-                    setData: {
-                        type: Number,
-                        observer: '_valueChanged'
                     },
                     autoValidate: Boolean,
                     required: {
@@ -209,6 +205,7 @@
                     },
                     value: {
                         notify: true,
+                        type: String,
                         observer: '_valueChanged',
                     },
                     invalid: {
@@ -237,8 +234,6 @@
                 super.connectedCallback()
                 this.$.vaadinComboBox.addEventListener('value-changed', (e) => {
                     this.set('value', this.$.vaadinComboBox.value)
-                    //this.selectedItem = this.$.vaadinComboBox.selectedItem
-                    //console.log(this.selectedItem)
                 })
             }
             validate() {
@@ -257,18 +252,22 @@
                 this.$.nativeInput.value = ""
                 this.selectedItem = null
             }
+
             setSeleted(items) {
+                
                 if (items.length >= 1) {
+                    if(this.value!=undefined){
+                        this.$.vaadinComboBox.value = this.value
+                    }
                     
-                    this._valueChanged(this.value)
-                    this.$.vaadinComboBox.value = this.value
                 }
 
             }
 
             _valueChanged(val) {
-                // console.log(val)
-                this.$.vaadinComboBox.value = val
+
+                this.setSeleted(this.items)
+
                 
                 if (this.autoValidate && this.required) {
                     if (this.fristValue && this.value == "") {
