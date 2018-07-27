@@ -143,7 +143,7 @@
             </template>
             <div class="input-container">
                 <vaadin-combo-box-light id="vaadinComboBox" items="[[items]]" item-label-path="[[itemLabelPath]]" item-value-path="[[itemValuePath]]"
-                    attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}" value="{{value}}">
+                    attr-for-value="bind-value" disabled$="[[disabled]]" selected-item="{{selectedItem}}">
                     <iron-input>
                         <input id="nativeInput" class="form-control" placeholder="[[placeholder]]" invalid$="{{invalid}}" disabled$="[[disabled]]">
                     </iron-input>
@@ -259,6 +259,7 @@
             }
             setSeleted(items) {
                 if (items.length >= 1) {
+                    
                     this._valueChanged(this.value)
                     this.$.vaadinComboBox.value = this.value
                 }
@@ -266,6 +267,9 @@
             }
 
             _valueChanged(val) {
+                // console.log(val)
+                this.$.vaadinComboBox.value = val
+                
                 if (this.autoValidate && this.required) {
                     if (this.fristValue && this.value == "") {
                         this.invalid = false
@@ -289,7 +293,7 @@
                     }
                 }
 
-                setInterval(1,function(){
+                setTimeout(1,function(){
                     this.dispatchEvent(new CustomEvent('selected-item-changed', {
                         detail: detail
                     }))
