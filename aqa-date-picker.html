@@ -86,8 +86,7 @@
             }
 
             _valueChanged(val){
-                if(val!=""){
-                    console.log(val)
+                if(val!="" && val!=null){
                     var dataArr = val.split("-")
                     this.child.value = dataArr[2] + dataArr[1] + (parseInt(dataArr[0])+543)
                 }
