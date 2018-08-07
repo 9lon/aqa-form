@@ -35,13 +35,14 @@
             static get is() { return 'aqa-date-picker'; }
             static get properties() {
                 return {
-                    valuePanel: {
-                        type: String,
-                        observer: '_valuePanelChanged'
-                    },
+                    // valuePanel: {
+                    //     type: String,
+                    //     observer: '_valuePanelChanged'
+                    // },
 
                     value: {
                         type: String,
+                        nofify:true,
                         observer: '_valueChanged',
                         value:""
                     }
@@ -69,7 +70,8 @@
 
             _activePanel() {
                 var valueChild = this.child.value
-                if(valueChild=="" || valueChild==undefined){
+
+                if(valueChild=="" || valueChild==undefined || isNaN(valueChild)){
                     this.panel.value = ""
                 }else{
                     this.panel.value = parseInt(valueChild.substring(4, 8))-543 + "-" + valueChild.substring(2, 4) + "-" +valueChild.substring(0, 2)
@@ -92,10 +94,10 @@
                 }
             }
 
-            _valuePanelChanged(val){
-                var dataArr = val.split("-")
-                this.child.value = dataArr[2] + dataArr[1] + (parseInt(dataArr[0])+543)
-            }
+            // _valuePanelChanged(val){
+            //     var dataArr = val.split("-")
+            //     this.child.value = dataArr[2] + dataArr[1] + (parseInt(dataArr[0])+543)
+            // }
 
 
 

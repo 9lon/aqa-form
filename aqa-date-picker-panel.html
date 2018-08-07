@@ -253,7 +253,6 @@
                                     value: i
                                 })
                             }
-                            console.log(list)
                             return list
                         }
                     },
@@ -353,7 +352,7 @@
                 // ถ้าไม่ได้กด วันที่เป็นค่าว่าง
                 if(!e.model.item.offset) {
                     this.value = e.model.item.date
-                    this.element.valuePanel = e.model.item.date
+                    this.element.value = e.model.item.date
                     // setTimeout((e)=>this._close(),500)
                     this._close()
                 }
