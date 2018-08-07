@@ -153,7 +153,7 @@
                 </vaadin-combo-box-light>
 
                 <template is="dom-if" if="{{value}}">
-                    <iron-icon class="arrow-drop-downw" hidden="{{disabled}}" icon="icons:clear" on-click="reset"></iron-icon>
+                    <iron-icon class="arrow-drop-downw" hidden="{{disabled}}" icon="icons:clear" on-click="reset" hidden$="[[noReset]]"></iron-icon>
                 </template>
                 <iron-icon class="arrow-drop-down" hidden="{{disabled}}" icon="icons:arrow-drop-down" on-click="_focusInput"></iron-icon>
             </div>
@@ -225,6 +225,10 @@
                         notify: true
                     },
                     noLabelFloat:{
+                        type:Boolean,
+                        value:false
+                    },
+                    noReset: {
                         type:Boolean,
                         value:false
                     }
