@@ -38,12 +38,21 @@
                     valuePanel: {
                         type: String,
                         observer: '_valuePanelChanged'
+                    },
+
+                    value: {
+                        type: String,
+                        observer: '_valueChanged',
+                        value:""
                     }
                 }
             }
 
             constructor() {
                 super()
+
+                this.child = this.children[0]
+                this.child.type = 'date'        
 
                 if (!window.aqaDataPickerSection) {
                     window.aqaDataPickerSection = document.createElement('aqa-date-picker-panel')
@@ -56,15 +65,7 @@
 
             }
 
-            connectedCallback() {
-                super.connectedCallback()
-
-                this.child = this.children[0]
-                this.child.type = 'date'
-
-
-
-            }
+         
 
             _activePanel() {
                 var valueChild = this.child.value
@@ -82,6 +83,14 @@
                 this.panel.active = true
                 
 
+            }
+
+            _valueChanged(val){
+                if(val!=""){
+                    console.log(val)
+                    var dataArr = val.split("-")
+                    this.child.value = dataArr[2] + dataArr[1] + (parseInt(dataArr[0])+543)
+                }
             }
 
             _valuePanelChanged(val){
