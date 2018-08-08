@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <div on-click="_close">
+                    <div on-click="close">
                         <div>x</div>
                     </div>
                 </div>
@@ -260,10 +260,9 @@
                         type: Array,
                         value: []
                     },
-                    active: {
+                    activeStatus: {
                         type: Boolean,
-                        value: false,
-                        observer:'_activeChanged'
+                        value: false
                     }
                 };
             }
@@ -354,7 +353,7 @@
                     this.value = e.model.item.date
                     this.element.value = e.model.item.date
                     // setTimeout((e)=>this._close(),500)
-                    this._close()
+                    this.close()
                 }
                 
             }
@@ -407,21 +406,15 @@
 
 
 
-            _activeChanged(val){
-                if(!val){
-                    this.style.display = "none"
-                    return
-                }
-                
+            active(val){
                 // เมือ Active ให้แสดง
+                this.activeState = true
                 this.style.display = "block"
                 this._renderPosition()
-                
             }
             
             _renderPosition(){
-                
-                if(this.active) {
+                if(this.activeState) {
                     var bodyHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
 
                     var offsetChild = this.child.getBoundingClientRect()
@@ -440,8 +433,9 @@
 
             }
 
-            _close(){
-                this.active = false
+            close(){
+                this.activeState = false
+                this.style.display = "none"
             }
 
         }
