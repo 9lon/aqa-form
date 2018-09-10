@@ -26,6 +26,8 @@
     <h3>Basic aqa-form demo</h3>
     <demo-snippet>
       <template>
+        <aqa-input type="password" label="password" value="สวัสดีครับ"></aqa-input>
+        <aqa-input label="disabled" value="สวัสดีครับ" disabled></aqa-input>
         <aqa-input label="ชื่อผู้ใช้งาน"></aqa-input>
         <dom-bind>
           <template>
@@ -42,7 +44,7 @@
               </script>
           </template>
         </dom-bind>
-        <aqa-date-picker value="{{x}}">
+        <aqa-date-picker value="{{x}}" disabled>
             <aqa-input label="วันเกิด"></aqa-input>
         </aqa-date-picker>
 

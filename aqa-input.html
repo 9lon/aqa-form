@@ -49,9 +49,10 @@
 
             input[disabled] {
                 /* border: 0; */
-                background-color: #F3F7F9;
-                border-color: #e4eaec;
-                color: #a8b3c5;
+                /* background-color: #F3F7F9; */
+                border-style: dashed;
+                border-color: #CCC;
+                color: #999;
                 cursor: pointer;
                 cursor: no-drop;
             }
@@ -225,6 +226,10 @@
             }
 
             _typeChanged(type) {
+                if(type=="password"){
+                    this.$.nativeInput.type = "password"
+                }
+
                 if (type == "phone" || type == "pid" || type == "date") {
                     this.allowedPattern = "[0-9]"
                 }
